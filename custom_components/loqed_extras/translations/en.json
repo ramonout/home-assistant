@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "LOQED Extras",
+        "description": "Create a personal access token at [LOQED]({token_url}) (admin account) and enter it here.",
+        "data": { "api_token": "Personal access token" }
+      },
+      "pick_lock": {
+        "title": "Select lock",
+        "data": { "lock_id": "Lock" }
+      },
+      "reauth_confirm": {
+        "title": "Token rejected",
+        "description": "Create a new personal access token at [LOQED]({token_url}).",
+        "data": { "api_token": "Personal access token" }
+      }
+    },
+    "error": {
+      "invalid_auth": "Token rejected",
+      "cannot_connect": "Cannot reach LOQED cloud",
+      "no_locks": "No locks found in this account"
+    },
+    "abort": {
+      "already_configured": "This lock is already configured",
+      "reauth_successful": "Token updated"
+    }
+  },
+  "entity": {
+    "switch": {
+      "open_house_mode": { "name": "Open house mode" }
+    }
+  }
+}

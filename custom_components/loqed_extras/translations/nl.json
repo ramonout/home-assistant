@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "LOQED Extras",
+        "description": "Maak een persoonlijk toegangstoken aan op [LOQED]({token_url}) (beheerdersaccount) en voer het hier in.",
+        "data": { "api_token": "Persoonlijk toegangstoken" }
+      },
+      "pick_lock": {
+        "title": "Selecteer slot",
+        "data": { "lock_id": "Slot" }
+      },
+      "reauth_confirm": {
+        "title": "Token geweigerd",
+        "description": "Maak een nieuw persoonlijk toegangstoken aan op [LOQED]({token_url}).",
+        "data": { "api_token": "Persoonlijk toegangstoken" }
+      }
+    },
+    "error": {
+      "invalid_auth": "Token geweigerd",
+      "cannot_connect": "Kan de LOQED-cloud niet bereiken",
+      "no_locks": "Geen sloten gevonden in dit account"
+    },
+    "abort": {
+      "already_configured": "Dit slot is al geconfigureerd",
+      "reauth_successful": "Token bijgewerkt"
+    }
+  },
+  "entity": {
+    "switch": {
+      "open_house_mode": { "name": "Open-huismodus" }
+    }
+  }
+}
