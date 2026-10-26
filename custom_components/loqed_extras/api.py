@@ -31,13 +31,26 @@ class LoqedCloudClient:
             if resp.status in (401, 403):
                 raise LoqedAuthError
             resp.raise_for_status()
-            if resp.content_type == "application/json":
-                return await resp.json()
-            return None
+            body = await resp.read()
+            if not body:
+                return None
+            try:
+                # content_type=None: accept variants such as application/vnd.api+json
+                return await resp.json(content_type=None)
+            except ValueError:
+                if method == "get":
+                    raise aiohttp.ClientError(
+                        f"Non-JSON response ({resp.content_type}): {body[:200]!r}"
+                    ) from None
+                return None
 
     async def async_get_locks(self) -> list[dict[str, Any]]:
         """Return all locks of the account."""
-        return (await self._request("get", "api/locks/"))["data"]
+        payload = await self._request("get", "api/locks/")
+        locks = payload.get("data") if isinstance(payload, dict) else payload
+        if not isinstance(locks, list):
+            raise aiohttp.ClientError(f"Unexpected locks payload: {payload!r:.200}")
+        return locks
 
     async def async_set_setting(self, lock_id: str, name: str, value: int) -> None:
         """Change a single lock setting (signed 32-bit integer value)."""

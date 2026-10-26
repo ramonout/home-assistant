@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Mapping
 from typing import Any
 
@@ -13,6 +14,8 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import LoqedAuthError, LoqedCloudClient
 from .const import CONF_API_TOKEN, CONF_LOCK_ID, DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 TOKEN_URL = "https://integrations.production.loqed.com/personal-access-tokens"
 
@@ -33,7 +36,8 @@ class LoqedExtrasConfigFlow(ConfigFlow, domain=DOMAIN):
             self._locks = await client.async_get_locks()
         except LoqedAuthError:
             return "invalid_auth"
-        except (aiohttp.ClientError, TimeoutError):
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.warning("Fetching LOQED locks failed: %s", err)
             return "cannot_connect"
         return None if self._locks else "no_locks"
 
