@@ -18,7 +18,12 @@ class LoqedCloudClient:
 
     def __init__(self, session: aiohttp.ClientSession, token: str) -> None:
         self._session = session
-        self._headers = {"Authorization": f"Bearer {token}"}
+        # Without Accept: application/json the server answers auth failures with a
+        # redirect to its HTML login page instead of a 401.
+        self._headers = {
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+        }
 
     async def _request(self, method: str, path: str, **kwargs: Any) -> Any:
         async with self._session.request(
